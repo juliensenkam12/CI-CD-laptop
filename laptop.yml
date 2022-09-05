@@ -1,0 +1,31 @@
+# 2 prefinned stages 
+
+
+stages:
+    - build 
+    - test 
+
+variables:
+    BUILD_FILE_NAME: laptop.txt
+
+
+build laptop:
+    image: alpine
+    stage: build 
+    script: 
+        - echo "build a laptop"
+        - mkdir "build"
+        - echo "Mainboard" >> build/$BUILD_FILE_NAME
+        - cat build/$BUILD_FILE_NAME
+        - echo "keyboard" >> build/$BUILD_FILE_NAME
+    artifacts:
+        paths:
+            - build 
+
+test laptop:
+    image: alpine
+    stage: test 
+    script: 
+        - test -f build/$BUILD_FILE_NAME
+        - grep "Mainboard" build/$BUILD_FILE_NAME
+        - grep "keyboard" build/$BUILD_FILE_NAME
